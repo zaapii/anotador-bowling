@@ -20,7 +20,7 @@
             Bienvenido {{ getCurrentUserName }}
           </p>
 
-          <p>
+          <p class="font-italic text-center">
             {{ getCurrentUserEmail }}
           </p>
         </v-list-item-subtitle>
