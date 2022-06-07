@@ -51,6 +51,7 @@ export default {
             email: result.additionalUserInfo.profile.email,
             picture: result.additionalUserInfo.profile.picture,
           });
+          this.$emit("close-dialog");
         });
     },
   },

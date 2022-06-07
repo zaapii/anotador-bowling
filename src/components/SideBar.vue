@@ -1,16 +1,28 @@
 <template>
-  <v-navigation-drawer v-if="!this.$vuetify.breakpoint.mobile" app>
+  <v-navigation-drawer dark v-if="!this.$vuetify.breakpoint.mobile" app>
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="text-h6">
-          <img
-            :src="getCurrentUserPicture ? getCurrentUserPicture : ''"
-            alt=""
-            style="max-width: 50%"
-          />
+          <v-row justify="center" class="my-4">
+            <img
+              :src="getCurrentUserPicture ? getCurrentUserPicture : ''"
+              alt=""
+              style="max-width: 50%"
+              class="rounded-circle"
+            />
+          </v-row>
         </v-list-item-title>
-        <v-list-item-subtitle>
-          Bienvenido {{ getCurrentUserName }}
+        <v-list-item-subtitle v-if="isAuthenticated">
+          <p
+            class="text-overline text-center"
+            style="font-weight: bold !important"
+          >
+            Bienvenido {{ getCurrentUserName }}
+          </p>
+
+          <p>
+            {{ getCurrentUserEmail }}
+          </p>
         </v-list-item-subtitle>
       </v-list-item-content>
     </v-list-item>
@@ -20,7 +32,7 @@
     <v-list dense nav>
       <v-list-item v-if="!isAuthenticated">
         <v-list-item-content>
-          <v-btn block elevation="2" outlined @click="dialog = !dialog">
+          <v-btn block elevation="2" dark @click="dialog = !dialog">
             <v-list-item-icon>
               <v-icon>mdi-login</v-icon>
             </v-list-item-icon>
@@ -30,19 +42,22 @@
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
-          <router-link to="/calendario">
-            <v-btn block elevation="2" outlined>
-              <v-list-item-icon>
-                <v-icon>mdi-calendar</v-icon>
-              </v-list-item-icon>
-              Calendario</v-btn
-            ></router-link
+          <v-btn block elevation="2" dark>
+            <v-list-item-icon>
+              <v-icon>mdi-bowling</v-icon>
+            </v-list-item-icon>
+            Dashboard</v-btn
           >
         </v-list-item-content>
       </v-list-item>
       <v-list-item v-if="isAuthenticated">
         <v-list-item-content>
-          <v-btn @click="handleClickSignOut" block elevation="2" outlined
+          <v-btn
+            @click="handleClickSignOut"
+            dark
+            block
+            elevation="2"
+            color="red darken-3"
             ><v-list-item-icon> <v-icon>mdi-logout</v-icon> </v-list-item-icon
             >Salir</v-btn
           >
@@ -50,7 +65,7 @@
       </v-list-item>
     </v-list>
 
-    <login-view :dialog="showLogin" />
+    <login-view @close-dialog="dialog = false" :dialog="showLogin" />
   </v-navigation-drawer>
 </template>
 
@@ -74,6 +89,7 @@ export default {
       "isAuthenticated",
       "getCurrentUserPicture",
       "getCurrentUserName",
+      "getCurrentUserEmail",
     ]),
 
     showLogin() {
