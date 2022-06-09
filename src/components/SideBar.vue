@@ -32,7 +32,7 @@
     <v-list dense nav>
       <v-list-item v-if="!isAuthenticated">
         <v-list-item-content>
-          <v-btn block elevation="2" dark @click="dialog = !dialog">
+          <v-btn block elevation="2" dark @click="handleClickSignIn">
             <v-list-item-icon>
               <v-icon>mdi-login</v-icon>
             </v-list-item-icon>
@@ -64,14 +64,11 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-
-    <login-view @close-dialog="dialog = false" :dialog="showLogin" />
   </v-navigation-drawer>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import LoginView from "./LoginView";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -79,10 +76,8 @@ export default {
   data() {
     return {
       dialog: false,
+      isInit: false,
     };
-  },
-  components: {
-    LoginView,
   },
   computed: {
     ...mapGetters([
@@ -90,15 +85,26 @@ export default {
       "getCurrentUserPicture",
       "getCurrentUserName",
       "getCurrentUserEmail",
+      "isAuthenticated",
     ]),
-
-    showLogin() {
-      if (this.dialog) return true;
-      else return false;
-    },
   },
   methods: {
-    ...mapActions(["logOutCurrentUser"]),
+    ...mapActions(["logOutCurrentUser", "setCurrentUser", "logOutCurrentUser"]),
+    async handleClickSignIn() {
+      let provider = new firebase.auth.GoogleAuthProvider();
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then((result) => {
+          console.log(result);
+          this.setCurrentUser({
+            name: result.additionalUserInfo.profile.name,
+            token: result.credential.accessToken,
+            email: result.additionalUserInfo.profile.email,
+            picture: result.additionalUserInfo.profile.picture,
+          });
+        });
+    },
     async handleClickSignOut() {
       firebase
         .auth()

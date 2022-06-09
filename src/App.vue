@@ -3,7 +3,9 @@
     <v-app>
       <side-bar />
       <v-main>
-        <v-container fluid> </v-container>
+        <v-container fluid>
+          <main-component />
+        </v-container>
       </v-main>
 
       <v-footer app>
@@ -14,6 +16,7 @@
 </template>
 
 <script>
+import MainComponent from "./components/MainComponent.vue";
 import SideBar from "./components/SideBar.vue";
 
 export default {
@@ -21,10 +24,7 @@ export default {
 
   components: {
     SideBar,
+    MainComponent,
   },
-
-  data: () => ({
-    //
-  }),
 };
 </script>

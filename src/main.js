@@ -7,6 +7,10 @@ import store from "./store";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
+import VAnimateCss from "v-animate-css";
+
+Vue.use(VAnimateCss);
+
 firebase.initializeApp({
   apiKey: "AIzaSyBxMkAKyfR-ixliVXXI4yM-BPfqBRLiTIc",
   authDomain: "anotador-bowling.firebaseapp.com",
